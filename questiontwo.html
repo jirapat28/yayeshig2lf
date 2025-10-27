@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <title>𝚁𝚊𝚔𝚏𝚊𝚗2</title>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      overflow: hidden;
+    }
+
+    body {
+      background: radial-gradient(circle at top, rgba(255,255,255,0.1), transparent 30%),
+                  linear-gradient(to bottom, #0a0a0a 0%, #111a2d 50%, #001f4d 100%);
+      font-family: "Sarabun", sans-serif;
+      color: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+      flex-direction: column;
+      text-align: center;
+    }
+
+    .formBox {
+      background-color: #a0d8ef;
+      padding: 40px 30px;
+      border-radius: 20px;
+      box-shadow: 0 0 15px rgba(160, 216, 239, 0.4);
+      border: 2px solid #4fc3f7;
+      width: 320px;
+      z-index: 1;
+      color: white;
+    }
+
+    h2 {
+      font-size: 26px;
+      margin-bottom: 20px;
+      text-shadow: 1px 1px 3px #000;
+    }
+
+    input[type="date"] {
+      padding: 10px;
+      font-size: 18px;
+      border-radius: 8px;
+      border: none;
+      outline: none;
+      margin-top: 20px;
+      background-color: #fff;
+      color: #4fc3f7;
+      width: 100%;
+    }
+
+    button {
+      margin-top: 20px;
+      padding: 10px 20px;
+      font-size: 18px;
+      border: none;
+      border-radius: 8px;
+      background-color: #4fc3f7;
+      color: white;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    button:hover {
+      background-color: #039be5;
+    }
+
+    .floating-heart-bg {
+      position: absolute;
+      bottom: -30px;
+      font-size: 24px;
+      animation: riseHeart 6s infinite;
+      opacity: 0.8;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    @keyframes riseHeart {
+      0% { transform: translateY(0) scale(1); opacity: 0.8; }
+      100% { transform: translateY(-100vh) scale(1.5); opacity: 0; }
+    }
+
+    .floating-heart {
+      position: absolute;
+      font-size: 20px;
+      animation: floatUp 1.5s forwards;
+      pointer-events: none;
+    }
+
+    @keyframes floatUp {
+      0% { transform: translateY(0) scale(1); opacity: 1; }
+      100% { transform: translateY(-150px) scale(1.5); opacity: 0; }
+    }
+
+    #errorBox {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background-color: rgba(0, 0, 0, 0.6);
+      padding: 20px 30px;
+      border-radius: 12px;
+      color: #ffcccb;
+      display: none;
+      box-shadow: 0 0 10px #000;
+      text-align: center;
+      z-index: 2;
+    }
+
+    #errorBox button {
+      margin-top: 15px;
+      padding: 8px 16px;
+      font-size: 16px;
+      border: none;
+      border-radius: 8px;
+      background-color: #ff4d6d;
+      color: white;
+      cursor: pointer;
+    }
+
+    #errorBox button:hover {
+      background-color: #ff1a4d;
+    }
+
+    @keyframes shake {
+      0% { transform: translateX(0); }
+      25% { transform: translateX(-5px); }
+      50% { transform: translateX(5px); }
+      75% { transform: translateX(-5px); }
+      100% { transform: translateX(0); }
+    }
+
+    .shake {
+      animation: shake 0.5s;
+    }
+
+ button:disabled {
+    background-color: #b3e5fc;
+    cursor: not-allowed;
+    opacity: 0.6;
+  } 
+
+  </style>
+</head>
+<body>
+
+  <!-- หัวใจลอยรอบๆ -->
+  <div class="floating-heart-bg" style="left: 10%;">💖</div>
+  <div class="floating-heart-bg" style="left: 25%; animation-delay: 2s;">💗</div>
+  <div class="floating-heart-bg" style="left: 40%; animation-delay: 4s;">💘</div>
+  <div class="floating-heart-bg" style="left: 60%; animation-delay: 1s;">💞</div>
+  <div class="floating-heart-bg" style="left: 80%; animation-delay: 3s;">💕</div>
+
+  <!-- เสียงหัวใจลอย -->
+  <audio id="heartSound">
+    <source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_4e84b1b9e5.mp3" type="audio/mpeg">
+  </audio>
+
+  <!-- กล่องคำถาม -->
+  <div class="formBox">
+    <h2>เราคบกันวันไหนคะ 💬</h2>
+    <input type="date" id="dateInput">
+    <button id="submitBtn" onclick="checkDate()" disabled>โอเคร</button>
+  </div>
+
+  <!-- กล่องแจ้งเตือน -->
+  <div id="errorBox">
+    <p>เธอจำไม่ได้เหรอคะว่าเราคบกันวันไหน</p>
+    <button onclick="resetForm()">ขอตอบใหม่</button>
+  </div>
+
+  <script>
+    const correctDate = '2025-08-28';
+    const dateInput = document.getElementById('dateInput');
+    const submitBtn = document.getElementById('submitBtn');
+    const errorBox = document.getElementById('errorBox');
+    const heartSound = document.getElementById('heartSound');
+    const formBox = document.querySelector('.formBox');
+
+    dateInput.addEventListener('input', function () {
+      submitBtn.disabled = !dateInput.value;
+    });
+
+    function createFloatingHeart() {
+      const heart = document.createElement('div');
+      heart.classList.add('floating-heart');
+      heart.textContent = '💖';
+      heart.style.left = Math.random() * 80 + 'px';
+      formBox.appendChild(heart);
+      heartSound.currentTime = 0;
+      heartSound.play().catch(e => console.log("ไม่สามารถเล่นเสียงได้:", e));
+      setTimeout(() => heart.remove(), 1500);
+    }
+
+    function createSadHeart() {
+      const heart = document.createElement('div');
+      heart.classList.add('floating-heart');
+      heart.textContent = '💔';
+      heart.style.left = Math.random() * 80 + 'px';
+      formBox.appendChild(heart);
+      setTimeout(() => heart.remove(), 1500);
+    }
+
+    function checkDate() {
+      const input = dateInput.value;
+      if (input === correctDate) {
+        for (let i = 0; i < 5; i++) {
+          setTimeout(createFloatingHeart, i * 200);
+        }
+        setTimeout(() => {
+          window.location.href = 'three.html';
+        }, 1800);
+      } else {
+        formBox.classList.add('shake');
+        for (let i = 0; i < 3; i++) {
+          setTimeout(createSadHeart, i * 200);
+        }
+        setTimeout(() => {
+          formBox.classList.remove('shake');
+        }, 500);
+        errorBox.style.display = 'block';
+      }
+    }
+
+    function resetForm() {
+      errorBox.style.display = 'none';
+      dateInput.value = '';
+      submitBtn.disabled = true;
+    }
+
+    window.addEventListener('pageshow', function (event) {
+      if (event.persisted || performance.getEntriesByType("navigation")[0].type === "back_forward") {
+        resetForm();
+      }
+    });
+  </script>
+
+</body>
+</html>

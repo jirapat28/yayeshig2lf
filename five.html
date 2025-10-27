@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <title>𝚁𝚊𝚔 𝙵𝚊𝚎𝚗 𝚃𝚊𝚕𝚘𝚝 𝙿𝚊𝚒❤︎</title>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      overflow: hidden;
+      cursor: pointer;
+    }
+
+    body {
+      background: radial-gradient(circle at top, rgba(255,255,255,0.1), transparent 30%),
+                  linear-gradient(to bottom, #0a0a0a 0%, #111a2d 50%, #001f4d 100%);
+      font-family: "Sarabun", sans-serif;
+      color: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+      flex-direction: column;
+      text-align: center;
+    }
+
+    .love-note {
+      font-size: 22px;
+      line-height: 1.8;
+      padding: 25px 35px;
+      background: linear-gradient(135deg, #f8bbd0, #b3e5fc);
+      border-radius: 30px 10px 30px 10px;
+      border: 3px solid #fff;
+      box-shadow:
+        0 0 15px rgba(255, 192, 203, 0.6),
+        0 0 25px rgba(179, 229, 252, 0.5),
+        inset 0 0 10px rgba(255, 255, 255, 0.3);
+      animation: floatNote 4s ease-in-out infinite;
+      color: #fff;
+      text-shadow: 1px 1px 2px #000;
+      max-width: 90%;
+      backdrop-filter: blur(3px);
+    }
+
+    @keyframes floatNote {
+      0% { transform: translateY(0px) rotate(0deg); }
+      50% { transform: translateY(-10px) rotate(1deg); }
+      100% { transform: translateY(0px) rotate(0deg); }
+    }
+
+    .floating-heart-bg {
+      position: absolute;
+      bottom: -30px;
+      font-size: 24px;
+      animation: riseHeart 6s infinite;
+      opacity: 0.8;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    @keyframes riseHeart {
+      0% { transform: translateY(0) scale(1); opacity: 0.8; }
+      100% { transform: translateY(-100vh) scale(1.5); opacity: 0; }
+    }
+
+    .floating-heart {
+      position: absolute;
+      font-size: 20px;
+      animation: floatUp 1.5s forwards;
+      pointer-events: none;
+    }
+
+    @keyframes floatUp {
+      0% { transform: translateY(0) scale(1); opacity: 1; }
+      100% { transform: translateY(-150px) scale(1.5); opacity: 0; }
+    }
+  </style>
+</head>
+<body onclick="goToNext()">
+
+  <!-- หัวใจลอยรอบๆ -->
+  <div class="floating-heart-bg" style="left: 10%;">💖</div>
+  <div class="floating-heart-bg" style="left: 25%; animation-delay: 2s;">💗</div>
+  <div class="floating-heart-bg" style="left: 40%; animation-delay: 4s;">💘</div>
+  <div class="floating-heart-bg" style="left: 60%; animation-delay: 1s;">💞</div>
+  <div class="floating-heart-bg" style="left: 80%; animation-delay: 3s;">💕</div>
+
+  <!-- เสียงหัวใจลอย -->
+  <audio id="heartSound">
+    <source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_4e84b1b9e5.mp3" type="audio/mpeg">
+  </audio>
+
+  <!-- ข้อความกลาง -->
+  <h2 class="love-note">
+    𝚂𝚞𝚔𝚂𝚊𝚗 𝚆𝚊𝚗 𝙺𝚑𝚛𝚘𝚙 𝚁𝚘𝚙 𝚂𝚘𝚗𝚐 𝙳𝚞𝚎𝚊𝚗 𝙽𝚊 𝙺𝚑𝚊❤︎<br>
+    เค้ารักเธอมากๆเลย เค้าดีใจมากที่ได้เจอเธอ<br>
+    ตั้งเเต่มีเธออะไรๆก็ดีตลอดเลยยย<br>
+    อยากให้เธอรักเยอะๆๆเลยได้มั้ย<br>
+    เค้าไม่อยากให้เธอทิ้งเค้า เธอมีเค้าไปตลอดเลยได้มั้ยคะ<br>
+    เค้ารักเธอมากๆเลยนะที่รัก ❤︎
+  </h2>
+
+  <script>
+    const heartSound = document.getElementById('heartSound');
+
+    function createFloatingHeart() {
+      const heart = document.createElement('div');
+      heart.classList.add('floating-heart');
+      heart.textContent = '💖';
+      heart.style.left = Math.random() * window.innerWidth + 'px';
+      heart.style.top = Math.random() * window.innerHeight + 'px';
+      document.body.appendChild(heart);
+      heartSound.currentTime = 0;
+      heartSound.play().catch(e => console.log("ไม่สามารถเล่นเสียงได้:", e));
+      setTimeout(() => heart.remove(), 1500);
+    }
+
+    function goToNext() {
+      for (let i = 0; i < 5; i++) {
+        setTimeout(createFloatingHeart, i * 200);
+      }
+      setTimeout(() => {
+        window.location.href = 'five.html';
+      }, 1800);
+    }
+  </script>
+
+</body>
+</html>

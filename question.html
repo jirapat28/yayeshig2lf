@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<title>𝚁𝚊𝚔𝚏𝚊𝚗1</title>
+<style>
+  html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    overflow: hidden;
+  }
+
+  body {
+    background: radial-gradient(circle at top, rgba(255,255,255,0.1), transparent 30%),
+                linear-gradient(to bottom, #0a0a0a 0%, #111a2d 50%, #001f4d 100%);
+    font-family: "Sarabun", sans-serif;
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+  }
+
+  .formBox {
+    background-color: pink;
+    padding: 40px 30px;
+    border-radius: 20px;
+    box-shadow: 0 0 15px rgba(255, 192, 203, 0.4);
+    border: 2px solid #ff69b4;
+    width: 300px;
+    text-align: center;
+    position: relative;
+    z-index: 1;
+    color: white;
+  }
+
+  h2 {
+    font-size: 28px;
+    margin: 20px 0;
+    text-shadow: 1px 1px 3px #000;
+  }
+
+  input[type="date"] {
+    padding: 10px;
+    font-size: 18px;
+    border-radius: 8px;
+    border: none;
+    outline: none;
+    margin-bottom: 20px;
+    background-color: #fff;
+    color: #ff69b4;
+    width: 100%;
+  }
+
+  button {
+    padding: 10px 20px;
+    font-size: 18px;
+    border: none;
+    border-radius: 8px;
+    background-color: #ff69b4;
+    color: white;
+    cursor: pointer;
+    transition: 0.3s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  button:hover {
+    background-color: #ff1493;
+  }
+
+  button:disabled {
+    background-color: #ffc0cb;
+    cursor: not-allowed;
+    opacity: 0.6;
+  }
+
+  .floating-heart {
+    position: absolute;
+    font-size: 20px;
+    animation: floatUp 1.5s forwards;
+    pointer-events: none;
+  }
+
+  @keyframes floatUp {
+    0% { transform: translateY(0) scale(1); opacity: 1; }
+    100% { transform: translateY(-150px) scale(1.5); opacity: 0; }
+  }
+
+  #errorBox {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(10, 20, 40, 0.85); /* น้ำเงินดำ */
+    padding: 20px 30px;
+    border-radius: 12px;
+    color: #a0d8ef; /* ฟ้าอ่อน */
+    display: none;
+    box-shadow: 0 0 10px #000;
+    text-align: center;
+    z-index: 2;
+  }
+
+  #errorBox button {
+    margin-top: 15px;
+    padding: 8px 16px;
+    font-size: 16px;
+    border: none;
+    border-radius: 8px;
+    background-color: #4fc3f7; /* ฟ้าน้ำทะเล */
+    color: white;
+    cursor: pointer;
+  }
+
+  #errorBox button:hover {
+    background-color: #039be5; /* ฟ้าเข้ม */
+  }
+
+  .floating-heart-bg {
+    position: absolute;
+    bottom: -30px;
+    font-size: 24px;
+    animation: riseHeart 6s infinite;
+    opacity: 0.8;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  @keyframes riseHeart {
+    0% {
+      transform: translateY(0) scale(1);
+      opacity: 0.8;
+    }
+    100% {
+      transform: translateY(-100vh) scale(1.5);
+      opacity: 0;
+    }
+  }
+
+  @keyframes shake {
+    0% { transform: translateX(0); }
+    25% { transform: translateX(-5px); }
+    50% { transform: translateX(5px); }
+    75% { transform: translateX(-5px); }
+    100% { transform: translateX(0); }
+  }
+
+  .shake {
+    animation: shake 0.4s;
+  }
+</style>
+</head>
+<body>
+
+  <!-- หัวใจลอยรอบๆ -->
+  <div class="floating-heart-bg" style="left: 10%;">💖</div>
+  <div class="floating-heart-bg" style="left: 25%; animation-delay: 2s;">💗</div>
+  <div class="floating-heart-bg" style="left: 40%; animation-delay: 4s;">💘</div>
+  <div class="floating-heart-bg" style="left: 60%; animation-delay: 1s;">💞</div>
+  <div class="floating-heart-bg" style="left: 80%; animation-delay: 3s;">💕</div>
+
+  <!-- เสียงหัวใจลอย -->
+  <audio id="heartSound">
+    <source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_4e84b1b9e5.mp3" type="audio/mpeg">
+  </audio>
+
+  <!-- กล่องฟอร์ม -->
+  <div class="formBox">
+    <h2>เธอจำได้มั้ยคะว่าเราเจอกันวันไหน💬</h2>
+    <input type="date" id="dateInput">
+    <br>
+    <button id="submitBtn" onclick="checkDate()" disabled>โอเคร</button>
+  </div>
+
+  <!-- กล่องแจ้งเตือน -->
+  <div id="errorBox">
+    <p>เธอจำไม่ได้เหรอคะว่าเราเจอกันวันไหน💬</p>
+    <button onclick="resetForm()">ขอตอบใหม่</button>
+  </div>
+
+  <script>
+    const dateInput = document.getElementById('dateInput');
+    const correctDate = '2025-08-22';
+    const submitBtn = document.getElementById('submitBtn');
+    const errorBox = document.getElementById('errorBox');
+    const heartSound = document.getElementById('heartSound');
+    const formBox = document.querySelector('.formBox');
+
+    // เปิดปุ่มเมื่อเลือกวันที่
+    dateInput.addEventListener('input', function() {
+      submitBtn.disabled = !dateInput.value;
+    });
+
+    function createFloatingHeart() {
+      const heart = document.createElement('div');
+      heart.classList.add('floating-heart');
+      heart.textContent = '💖';
+      heart.style.left = Math.random() * 80 + 'px';
+      submitBtn.appendChild(heart);
+      heartSound.currentTime = 0;
+      heartSound.play().catch(e => console.log("ไม่สามารถเล่นเสียงได้:", e));
+      setTimeout(() => heart.remove(), 1500);
+    }
+
+    function checkDate() {
+      const input = dateInput.value;
+
+      if (input === correctDate) {
+        for (let i = 0; i < 5; i++) {
+          setTimeout(createFloatingHeart, i * 200);
+        }
+
+        setTimeout(() => {
+          window.location.href = 'questiontwo.html';
+        }, 1800);
+      } else {
+        errorBox.style.display = 'block';
+        formBox.classList.add('shake');
+        setTimeout(() => formBox.classList.remove('shake'), 400);
+      }
+    }
+
+    function resetForm() {
+      errorBox.style.display = 'none';
+      dateInput.value = '';
+      submitBtn.disabled = true;
+    }
+
+    // รีเซ็ตฟอร์มเมื่อโหลดหน้าใหม่หรือย้อนกลับ
+    window.addEventListener('pageshow', function(event) {
+      if (event.persisted || performance.getEntriesByType("navigation")[0].type === "back_forward") {
+        resetForm();
+      }
+    });
+  </script>
+
+</body>
+</html>

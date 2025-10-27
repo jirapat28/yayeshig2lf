@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<title>สำหรับที่รักของยาหยี 💕</title>
+<link href="https://fonts.googleapis.com/css2?family=Itim&family=Sarabun&display=swap" rel="stylesheet">
+<style>
+  html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    overflow: hidden;
+  }
+
+  body {
+    font-family: "Sarabun", sans-serif;
+    color: white;
+    background: radial-gradient(circle at top, rgba(255,255,255,0.1), transparent 30%),
+                linear-gradient(to bottom, #0a0a0a 0%, #111a2d 50%, #001f4d 100%);
+    background-repeat: no-repeat;
+    background-size: cover;
+    position: relative;
+  }
+
+  .floating-heart {
+    position: absolute;
+    bottom: -30px;
+    font-size: 24px;
+    animation: riseHeart 6s infinite;
+    opacity: 0.8;
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  @keyframes riseHeart {
+    0% {
+      transform: translateY(0) scale(1);
+      opacity: 0.8;
+    }
+    100% {
+      transform: translateY(-100vh) scale(1.5);
+      opacity: 0;
+    }
+  }
+
+  .envelope-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+    z-index: 2;
+    transition: transform 0.2s;
+    margin-top: 40px;
+  }
+
+  .envelope-container:hover {
+    transform: scale(1.1);
+  }
+
+ .envelope-text {
+  font-family: "Itim", cursive;
+  font-size: 28px;
+  margin-bottom: -60px; /* ขยับข้อความลงมาให้แนบกับซองจดหมาย */
+  text-align: center;
+  background: linear-gradient(45deg, #c084fc, #f472b6, #60a5fa);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: none;
+  animation: pulseText 3s infinite;
+}
+
+
+  @keyframes pulseText {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+  }
+
+  .envelope {
+    font-size: 240px;
+  }
+
+  .rose-image {
+    position: absolute;
+    bottom: 10px;
+    z-index: 1;
+    text-align: center;
+    width: 100%;
+  }
+
+  .rose-image img {
+    max-width: 400px;
+    height: auto;
+    animation: floatRose 4s ease-in-out infinite;
+  }
+
+  @keyframes floatRose {
+    0% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+    100% { transform: translateY(0); }
+  }
+</style>
+</head>
+<body>
+
+  <!-- หัวใจลอยรอบๆ -->
+  <div class="floating-heart" style="left: 10%;">💖</div>
+  <div class="floating-heart" style="left: 25%; animation-delay: 2s;">💗</div>
+  <div class="floating-heart" style="left: 40%; animation-delay: 4s;">💘</div>
+  <div class="floating-heart" style="left: 60%; animation-delay: 1s;">💞</div>
+  <div class="floating-heart" style="left: 80%; animation-delay: 3s;">💕</div>
+
+  <!-- ซองจดหมายพร้อมข้อความด้านบน -->
+  <div class="envelope-container" id="envelope">
+    <div class="envelope-text">ลองกดดูสิคะที่รัก 💌</div>
+    <div class="envelope">✉️</div>
+  </div>
+
+  <!-- ช่อดอกกุหลาบสีน้ำเงินด้านล่าง -->
+  <div class="rose-image">
+    <img src="https://i.postimg.cc/tCSRWjDZ/rose.png" alt="ช่อดอกกุหลาบสีน้ำเงินสำหรับยาหยี" />
+  </div>
+
+  <audio id="bgMusic" loop>
+    <source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_4e84b1b9e5.mp3" type="audio/mpeg">
+  </audio>
+
+  <script>
+    const envelope = document.getElementById("envelope");
+    const bgMusic = document.getElementById("bgMusic");
+
+    envelope.addEventListener("click", function() {
+      bgMusic.currentTime = 0;
+      bgMusic.play().catch(e => console.log("ไม่สามารถเล่นเสียงได้:", e));
+      setTimeout(() => {
+        window.location.href = "question.html";
+      }, 1000);
+    });
+  </script>
+
+</body>
+</html>
